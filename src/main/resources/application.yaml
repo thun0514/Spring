@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          jdbc:
+            format_sql: true
+            show_sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3307/project_memo
+    username: root
+    password: 12345678
+    driver-class-name: com.mysql.cj.jdbc.Driver
