@@ -4,10 +4,7 @@ import com.example.project.domain.Post;
 import com.example.project.dto.PostRequestDto;
 import com.example.project.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,10 @@ public class PostController {
     @PostMapping("/posts/update")
     public Post creatPost(@RequestBody PostRequestDto requestDto) {
         return postService.createPost(requestDto);
+    }
+
+    @PutMapping("/posts/update")
+    public Long updatePost(@RequestParam("id") Long id, @RequestBody PostRequestDto requestDto) {
+        return postService.update(id, requestDto);
     }
 }
