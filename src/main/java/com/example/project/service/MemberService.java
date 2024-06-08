@@ -2,6 +2,7 @@ package com.example.project.service;
 
 
 import com.example.project.domain.Member;
+import com.example.project.dto.LoginRequestDto;
 import com.example.project.dto.SignupRequestDto;
 import com.example.project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,19 @@ public class MemberService {
 
         Member member = new Member(userId, password, userName, email);
         memberRepository.save(member);
+    }
+
+    @Transactional
+    public void login(LoginRequestDto loginRequestDto) {
+        String userId = loginRequestDto.getUserId();
+        String password = loginRequestDto.getPassword();
+
+        Member member = memberRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+
+        if (!member.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }
