@@ -27,4 +27,9 @@ public class PostController {
     public Long updatePost(@RequestParam("id") Long id, @RequestBody PostRequestDto requestDto) {
         return postService.update(id, requestDto);
     }
+
+    @DeleteMapping("/posts/delete")
+    public Long deletePost(@RequestParam("id") Long id) {
+        return postService.deletePost(id);
+    }
 }
