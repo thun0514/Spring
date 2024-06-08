@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 
+import com.example.project.dto.LoginRequestDto;
 import com.example.project.dto.SignupRequestDto;
 import com.example.project.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,11 @@ public class MemberController {
     public String signup(@RequestBody SignupRequestDto signupRequestDto) {
         memberService.signup(signupRequestDto);
         return "redirect:/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequestDto loginRequestDto) {
+        memberService.login(loginRequestDto);
+        return "redirect:/posts";
     }
 }
