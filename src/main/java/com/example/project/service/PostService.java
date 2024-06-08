@@ -26,4 +26,13 @@ public class PostService {
         postRepository.save(post);
         return post;
     }
+
+    @Transactional
+    public Long update(Long id, PostRequestDto requestDto) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
+        );
+        post.update(requestDto);
+        return post.getPostNo();
+    }
 }
