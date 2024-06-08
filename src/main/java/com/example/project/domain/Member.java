@@ -2,6 +2,7 @@ package com.example.project.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,13 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private RoleType userRole;
+
+    @Builder
+    public Member(String userId, String password, String userName, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.userName = userName;
+        this.email = email;
+        this.userRole = RoleType.USER;
+    }
 }
