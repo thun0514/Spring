@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,6 +33,9 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private RoleType userRole;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
 
     @Builder
     public Member(String userId, String password, String userName, String email) {
