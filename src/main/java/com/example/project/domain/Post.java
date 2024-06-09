@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "POST")
 public class Post extends Timestamped {
 
     @Id
@@ -21,6 +22,10 @@ public class Post extends Timestamped {
 
     @Column(nullable = false)
     private String contents;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userNo", nullable = false)
+    private Member author;
 
     @Builder
     public Post(String title, String contents) {
@@ -34,9 +39,12 @@ public class Post extends Timestamped {
         this.contents = requestDto.getContents();
     }
 
-    @Builder
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
+    }
+
+    public String getAuthorName() {
+        return author.getUserName();
     }
 }
