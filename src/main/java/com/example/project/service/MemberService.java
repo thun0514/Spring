@@ -5,6 +5,8 @@ import com.example.project.domain.Member;
 import com.example.project.dto.LoginRequestDto;
 import com.example.project.dto.SignupRequestDto;
 import com.example.project.repository.MemberRepository;
+import com.example.project.security.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public void signup(SignupRequestDto signupRequestDto) {
@@ -39,7 +42,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void login(LoginRequestDto loginRequestDto) {
+    public void login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String userId = loginRequestDto.getUserId();
         String password = loginRequestDto.getPassword();
 
@@ -50,5 +53,7 @@ public class MemberService {
         if (!member.getPassword().equals(password)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.getUserId(), member.getUserRole()));
     }
 }
