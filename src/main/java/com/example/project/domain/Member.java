@@ -1,12 +1,12 @@
 package com.example.project.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -18,9 +18,13 @@ public class Member extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
 
+    @Size(min = 4, max = 10)
+    @Pattern(regexp = "^[a-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)로 구성되어야 합니다.")
     @Column(nullable = false, unique = true)
     private String userId;
 
+    @Size(min = 8, max = 15, message = "비밀번호는 8자 이상 15자 이하여야 합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "비밀번호는 알파벳 대소문자와 숫자만 사용 가능합니다.")
     @Column(nullable = false)
     private String password;
 
@@ -33,9 +37,6 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private RoleType userRole;
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts;
 
     @Builder
     public Member(String userId, String password, String userName, String email) {
