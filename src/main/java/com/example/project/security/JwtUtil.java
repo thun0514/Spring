@@ -15,8 +15,6 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-import static io.jsonwebtoken.Jwts.parserBuilder;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -50,13 +48,14 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String userId, RoleType role) {
+    public String createToken(String userId, String userName, RoleType role) {
         Date now = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(userId)
                         .claim(AUTHORIZATION_KEY, role)
+                        .claim("userName", userName)
                         .setExpiration(new Date(now.getTime() + validityInMilliseconds))
                         .setIssuedAt(now)
                         .signWith(key, signatureAlgorithm)
@@ -66,7 +65,7 @@ public class JwtUtil {
     // 토큰 검증
     public boolean validateToken(String token) {
         try {
-            parserBuilder().setSigningKey(key).build().parseClaimsJwt(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명입니다.");
