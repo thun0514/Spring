@@ -23,28 +23,25 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userNo", nullable = false)
-    private Member author;
+    @Column(nullable = false)
+    private String author;
 
     @Builder
-    public Post(String title, String contents) {
+    public Post(String title, String contents, String author) {
         this.title = title;
         this.contents = contents;
+        this.author = author;
     }
 
     @Builder
-    public Post(PostRequestDto requestDto) {
+    public Post(PostRequestDto requestDto, String author) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+        this.author = author;
     }
 
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
-    }
-
-    public String getAuthorName() {
-        return author.getUserName();
     }
 }
